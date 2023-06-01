@@ -1,0 +1,17 @@
+{
+  "name": "little-bird-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "oss": " node uploadToOss.mjs"
+  },
+  "devDependencies": {
+    "sass": "^1.62.1",
+    "vite": "^4.3.9",
+    "ali-oss": "^6.17.1"
+  }
+}

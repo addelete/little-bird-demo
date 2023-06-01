@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  place-content: center;
+  place-items: center;
+
+  flex-direction: column;
+  gap: 20px;
+
+  .stage {
+    background: #000;
+    position: relative;
+
+    .wall {
+      position: absolute;
+      background: #2c5dfd;
+
+      .door {
+        background: #000;
+        position: absolute;
+      }
+    }
+
+    .bird {
+      background: #00ffc0;
+      position: absolute;
+      border-radius: 50%;
+    }
+    .score {
+      visibility: hidden;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: #fff;
+      font-size: 20px;
+    }
+    .gameOver {
+      visibility: hidden;
+      width: 200px;
+      height: 100px;
+      background: #F7C644;
+      color: #000;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .tips {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      margin: 0;
+      line-height: 1.6em;
+    }
+  }
+}

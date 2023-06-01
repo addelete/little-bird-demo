@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Little Bird</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="stage">
+        <div class="wall">
+          <div class="door"></div>
+        </div>
+        <div class="bird"></div>
+        <div class="score">0</div>
+        <div class="gameOver"></div>
+      </div>
+      <div class="controls">
+        <label for="wallSpeed">墙壁速度</label>
+        <input
+          type="range"
+          id="wallSpeedControl"
+          min="0.5"
+          max="5"
+          step="0.1"
+          value="1"
+        />
+        <span class="wallSpeedValue">1</span>
+      </div>
+      <div class="tips">
+        <p>回车开始游戏</p>
+        <p>左、右方向键控制小鸟飞翔</p>
+        <p>小鸟穿过墙壁上的门得1分，撞墙游戏结束</p>
+      </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
