@@ -9,14 +9,27 @@ const WALL_START_SCALE = 0.3; // 墙壁起始位置比例
 const DOOR_WIDTH = 100; // 门宽度
 const DOOR_HEIGHT = 100; // 门高度
 
-let WALL_SPEED = Number(
-  localStorage.getItem('little-bird-demo:WALL_SPEED') || '1',
-); // 墙壁靠近的速度
 const FRAME_TIME = 1000 / 60; // 帧时间
-const X_SPEED_LESS_SCALE = 0.99; // 水平方向速度衰减系数
-const Y_SPEED_GRAVITY = 0.1; // 垂直方向重力加速度
-const X_SPEED_DIFF = 1; // 水平方向速度差值
-const Y_SPEED_DIFF = 2; // 垂直方向速度差值
+const BIRD_X_SPEED_LESS_SCALE = 0.99; // 水平方向速度衰减系数
+
+let SPEED_SCALE = (() => {
+  const cachedValue = Number(
+    localStorage.getItem('little-bird-demo:SPEED_SCALE'),
+  );
+  return isNaN(cachedValue) ? 1 : cachedValue;
+})(); // 速度倍率
+
+let BIRD_Y_SPEED_GRAVITY = 0.1 * SPEED_SCALE; // 垂直方向重力加速度
+let BIRD_X_SPEED_DIFF = 1 * SPEED_SCALE; // 水平方向速度差值
+let BIRD_Y_SPEED_DIFF = 2 * SPEED_SCALE; // 垂直方向速度差值
+let WALL_SPEED = 0.002 * SPEED_SCALE; // 墙壁移动速度
+
+const setSpeeds = () => {
+  BIRD_Y_SPEED_GRAVITY = 0.1 * SPEED_SCALE;
+  BIRD_X_SPEED_DIFF = 1 * SPEED_SCALE;
+  BIRD_Y_SPEED_DIFF = 2 * SPEED_SCALE;
+  WALL_SPEED = 0.002 * SPEED_SCALE;
+};
 
 class Game {
   stageEl = null;
@@ -102,8 +115,8 @@ class Game {
 
   // 小鸟飞
   fly(isLeft) {
-    this.birdSpeedY = -Y_SPEED_DIFF;
-    this.birdSpeedX += isLeft ? -X_SPEED_DIFF : X_SPEED_DIFF;
+    this.birdSpeedY = -BIRD_Y_SPEED_DIFF;
+    this.birdSpeedX += isLeft ? -BIRD_X_SPEED_DIFF : BIRD_X_SPEED_DIFF;
   }
 
   // 播放帧
@@ -116,7 +129,6 @@ class Game {
     this.randomDoor();
 
     this.frameInterval = setInterval(() => {
-      console.log(1);
       // 计算帧状态
       this.calcFrame();
       // 渲染帧
@@ -126,9 +138,9 @@ class Game {
 
   // 计算帧状态
   calcFrame() {
-    this.wallScale = this.wallScale + WALL_SPEED * 0.002;
-    this.birdSpeedX *= X_SPEED_LESS_SCALE;
-    this.birdSpeedY += Y_SPEED_GRAVITY;
+    this.wallScale = this.wallScale + WALL_SPEED;
+    this.birdSpeedX *= BIRD_X_SPEED_LESS_SCALE;
+    this.birdSpeedY += BIRD_Y_SPEED_GRAVITY;
 
     if (this.wallScale >= 1) {
       // 算出小鸟和门的坐标，小鸟的初始位置是在舞台中心，所以需要加上舞台宽高的一半
@@ -183,16 +195,16 @@ class Game {
 }
 
 const initGame = () => {
-  const wallSpeedControlEl = document.getElementById('wallSpeedControl');
-  const wallSpeedValueEl = document.querySelector('.wallSpeedValue');
-  console.log(WALL_SPEED);
-  wallSpeedControlEl.value = WALL_SPEED;
-  wallSpeedValueEl.textContent = WALL_SPEED;
+  const speedScaleControlEl = document.getElementById('speedScaleControl');
+  const speedScaleValueEl = document.querySelector('.speedScaleValue');
+  speedScaleControlEl.value = SPEED_SCALE;
+  speedScaleValueEl.textContent = SPEED_SCALE;
 
-  wallSpeedControlEl.addEventListener('change', (e) => {
-    WALL_SPEED = e.target.value;
-    localStorage.setItem('little-bird-demo:WALL_SPEED', WALL_SPEED);
-    wallSpeedValueEl.textContent = WALL_SPEED.toString();
+  speedScaleControlEl.addEventListener('change', (e) => {
+    SPEED_SCALE = e.target.value;
+    setSpeeds();
+    localStorage.setItem('little-bird-demo:SPEED_SCALE', SPEED_SCALE);
+    speedScaleValueEl.textContent = SPEED_SCALE.toString();
     e.target.blur();
   });
 
